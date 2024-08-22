@@ -10,6 +10,8 @@ import { Chat } from "./chat/chat.entity";
 import { MessageModule } from "./message/message.module";
 import { Message } from "./message/message.entity";
 import { MessagesGateway } from "./messages/messages.gateway";
+import { NestjsFormDataModule } from "nestjs-form-data";
+import { MinioModule } from './minio/minio.module';
 
 @Module({
   imports: [
@@ -29,6 +31,7 @@ import { MessagesGateway } from "./messages/messages.gateway";
     UserModule,
     ChatModule,
     MessageModule,
+    MinioModule,
   ],
   controllers: [],
   providers: [MessagesGateway],

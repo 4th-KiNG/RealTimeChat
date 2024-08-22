@@ -24,10 +24,6 @@ export class User {
   })
   name: string;
 
-  @Column({ nullable: true })
-  @IsString()
-  avatarURL: string;
-
   @Column("text", { nullable: true, array: true })
   chatsId: string[];
 

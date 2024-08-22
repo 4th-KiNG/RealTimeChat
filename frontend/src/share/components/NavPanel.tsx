@@ -20,7 +20,7 @@ const NavPanel = (props: INav) => {
       <nav
         className={`${
           isOpen ? "flex" : "hidden"
-        } flex-col h-full min-h-[calc(100vh-80px)] bg-black px-3 z-10 max-[700px]:absolute w-full`}
+        } flex-col h-full min-h-[calc(100vh-80px)] bg-black px-3 z-10 max-[700px]:absolute max-[700px]:h-[calc(100vh-80px)] w-full`}
       >
         {navLinks.map((link, index) => (
           <NavLink {...link} key={index} />

@@ -4,12 +4,15 @@ import { User } from "./user.entity";
 import { Repository } from "typeorm";
 import { CreateUserDto } from "src/auth/auth.dto";
 import * as bcrypt from "bcrypt";
+import { MinioService } from "src/minio/minio.service";
+import { Response } from "express";
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly minioService: MinioService,
   ) {}
 
   async create(dto: CreateUserDto) {
@@ -29,10 +32,26 @@ export class UserService {
   }
 
   async getById(id: string) {
-    return await this.userRepository.findOneBy({ id: id });
+    return await this.userRepository.findOne({
+      where: { id: id },
+      select: ["id", "name", "email", "chatsId"],
+    });
   }
 
   async getByEmail(email: string) {
     return await this.userRepository.findOneBy({ email: email });
+  }
+
+  async changeAvatar(id: string, avatar: Express.Multer.File) {
+    return this.minioService.uploadAvatar(id, avatar.buffer);
+  }
+
+  async getAvatar(id: string, res: Response) {
+    const avatarStream = await this.minioService.getAvatar(id);
+    res.set({
+      "Content-Type": "image/jpeg",
+    });
+
+    avatarStream.pipe(res);
   }
 }

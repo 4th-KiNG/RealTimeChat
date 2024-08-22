@@ -7,20 +7,16 @@ import { useAuth } from "./lib/hooks/useAuth";
 
 const App = observer(() => {
   const { user, error } = useAuth();
-
+  if (!user || error || user.id === "") return <AuthPage />;
   return (
     <>
-      {user && !error && user.id !== "" ? (
-        <Layout>
-          <Routes>
-            <Route path="/" element={<MainPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/chat/:chatId" element={<ChatPage />} />
-          </Routes>
-        </Layout>
-      ) : (
-        <AuthPage />
-      )}
+      <Layout>
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/chat/:chatId" element={<ChatPage />} />
+        </Routes>
+      </Layout>
     </>
   );
 });

@@ -8,7 +8,7 @@ const NavLink = (props: INavLink) => {
     <>
       <Link
         to={path}
-        className={`text-lg font-bold text-center px-2 py-3 rounded-xl ${
+        className={`text-lg text-center px-2 font-thin py-3 transition-all rounded-xl ${
           location.pathname === path ? "bg-white/20" : "bg-transparent"
         } `}
         onClick={

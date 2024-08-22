@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  minio:
+    image: quay.io/minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000" # MinIO API
+      - "9001:9001" # MinIO Web Console
+    environment:
+      MINIO_ROOT_USER: user # Замените на ваш ключ доступа
+      MINIO_ROOT_PASSWORD: password # Замените на ваш секретный ключ
+    volumes:
+      - ./data:/data # Данные будут сохраняться в локальной директории ./data
+      - ./config:/root/.minio # Конфигурация будет сохранена в локальной директории ./config
+    command: server /data --console-address ":9001"
+
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_USER: user # Замените на имя пользователя PostgreSQL
+      POSTGRES_PASSWORD: password # Замените на пароль PostgreSQL
+      POSTGRES_DB: postgres_db # Замените на имя базы данных
+    volumes:
+      - pgdata:/var/lib/postgresql/data # Данные будут сохраняться в Docker volume
+    ports:
+      - "5432:5432" # PostgreSQL порт
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com # Замените на ваш email для входа в PgAdmin
+      PGADMIN_DEFAULT_PASSWORD: admin # Замените на ваш пароль для PgAdmin
+    ports:
+      - "8080:80" # PgAdmin будет доступен по этому порту
+    depends_on:
+      - postgres
+
+volumes:
+  pgdata:

@@ -20,8 +20,8 @@ export class MessagesGateway {
 
   @SubscribeMessage("sendMessage")
   async createMessage(@MessageBody() createMessageDto: createMessageDto) {
-    await this.messageService.createMessage(createMessageDto);
     const message = await this.messageService.createMessage(createMessageDto);
+
     this.server
       .to(`${createMessageDto.chatId}`)
       .emit("receiveMessage", message);

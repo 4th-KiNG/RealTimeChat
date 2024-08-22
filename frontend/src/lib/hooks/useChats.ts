@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { CreateChat, GetChats } from "../api/chatApi";
+import { CreateChat, DeleteChat, GetChats } from "../api/chatApi";
 import { IFormValues } from "../../share/types/inputTypes";
 
 export const useChats = () => {
@@ -14,5 +14,11 @@ export const useChats = () => {
     onSuccess: () => refetchChats(),
   });
 
-  return { chats, refetchChats, createChat };
+  const { mutate: deleteChat } = useMutation({
+    mutationKey: ["delete chat"],
+    mutationFn: (chatId: string) => DeleteChat(chatId),
+    onSuccess: () => refetchChats(),
+  });
+
+  return { chats, refetchChats, createChat, deleteChat };
 };

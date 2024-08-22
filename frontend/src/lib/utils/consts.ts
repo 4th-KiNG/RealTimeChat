@@ -1,4 +1,5 @@
-export const IP = "http://localhost:3000";
+// export const IP = "http://localhost:3000";
+export const IP = "http://192.168.0.107:3000";
 export const emailPattern = {
   value:
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,

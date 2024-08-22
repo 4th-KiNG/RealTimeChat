@@ -10,7 +10,9 @@ const AuthPage = () => {
           className={`relative min-h-screen ${
             document.documentElement.clientWidth <= 700 ? "w-full" : "w-1/2"
           } ${
-            status === "signin" ? "" : "translate-x-full"
+            status === "signin" || document.documentElement.clientWidth <= 700
+              ? ""
+              : "translate-x-full"
           } bg-black p-3 flex flex-col transition duration-300 items-center justify-center`}
         >
           {status === "signup" && (

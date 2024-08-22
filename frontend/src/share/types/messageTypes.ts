@@ -3,4 +3,5 @@ export interface IMessage {
   ownerId: string;
   content: string;
   createDate: string;
+  chatId: string;
 }

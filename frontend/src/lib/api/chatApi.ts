@@ -27,3 +27,16 @@ export const GetChats = async () => {
   });
   return data;
 };
+
+export const DeleteChat = async (id: string) => {
+  const { data } = await axios({
+    method: "delete",
+    url: `${IP}/chat`,
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+    },
+    data: { chatId: id },
+  });
+
+  return data;
+};

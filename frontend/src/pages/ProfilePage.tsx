@@ -1,11 +1,12 @@
 import { observer } from "mobx-react-lite";
-import { defaultAvatar } from "../assets/images";
-import { Button, UserInfo } from "../share/ui";
+import { Button, Image, UserInfo } from "../share/ui";
 import { IUserInfo } from "../share/types/userInfoTypes";
 import { useAuth } from "../lib/hooks/useAuth";
+import { useRef } from "react";
 
 const ProfilePage = observer(() => {
-  const { user, SignOut } = useAuth();
+  const { user, SignOut, ChangeAvatarData, userAvatar } = useAuth();
+  const avatarRef = useRef<HTMLInputElement>(null);
   const userData: IUserInfo[] = [
     {
       title: "Почта",
@@ -18,9 +19,13 @@ const ProfilePage = observer(() => {
   ];
   return (
     <>
-      <div className="p-10 grid grid-cols-layout gap-6">
+      <div className="p-10 grid grid-cols-layout max-[900px]:flex flex-col max-[900px]:items-center gap-6">
         <div className="flex flex-col gap-4">
-          <img src={defaultAvatar} className="rounded-lg" alt="" />
+          <Image
+            src={userAvatar ? userAvatar : ""}
+            className="rounded-lg w-[250px] h-[250px] object-cover"
+            onClick={() => avatarRef.current?.click()}
+          />
           <Button label="Выйти" onClick={SignOut} />
         </div>
         <div className="flex flex-col gap-3">
@@ -30,6 +35,15 @@ const ProfilePage = observer(() => {
           ))}
         </div>
       </div>
+      <input
+        type="file"
+        ref={avatarRef}
+        className="hidden"
+        onChange={() => {
+          if (avatarRef.current && avatarRef.current.files)
+            ChangeAvatarData(avatarRef.current.files[0]);
+        }}
+      />
     </>
   );
 });

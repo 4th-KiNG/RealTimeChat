@@ -10,7 +10,7 @@ export default {
     extend: {
       gridTemplateColumns: { layout: "250px 1fr" },
       gridTemplateRows: { messages: "1fr 115px" },
-      width: { burgerSm: "18px", burgerMd: "24px", burgerLg: "32px" },
+      width: { burgerSm: "18px", burgerMd: "24px", burgerLg: "33px" },
     },
   },
   plugins: [nextui()],

@@ -4,10 +4,12 @@ import { Chat } from "./chat.entity";
 import { Repository } from "typeorm";
 import { CreateChatDto } from "./chat.dto";
 import * as bcrypt from "bcrypt";
+import { MessageService } from "src/message/message.service";
 
 @Injectable()
 export class ChatService {
   constructor(
+    private readonly messageService: MessageService,
     @InjectRepository(Chat)
     private readonly chatRepository: Repository<Chat>,
   ) {}
@@ -36,6 +38,7 @@ export class ChatService {
       throw new HttpException("Не удалось удалить чат", HttpStatus.BAD_REQUEST);
     }
     await this.chatRepository.delete(chatId);
+    this.messageService.deleteMessagesFromChat(chatId);
     return "OK";
   }
 

@@ -31,4 +31,9 @@ export class MessageService {
     await this.messageRepository.delete(messageId);
     return "OK";
   }
+
+  async deleteMessagesFromChat(chatId: string) {
+    await this.messageRepository.delete({ chatId: chatId });
+    return "OK";
+  }
 }

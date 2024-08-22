@@ -20,29 +20,34 @@ const ChatPage = () => {
     if (messages) setMessages(messages);
   }, [messages]);
 
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      if (messagesEndRef.current) {
+        messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 150);
+  };
+
   useEffect(() => {
+    scrollToBottom();
     if (chatId) {
       socket.emit("joinChat", chatId);
       socket.on("receiveMessage", GetMessage);
-      scrollToBottom();
+
       return () => {
         socket.off("receiveMessage", GetMessage);
       };
     }
   }, []);
 
-  const scrollToBottom = () => {
-    setTimeout(() => {
-      if (messagesEndRef.current) {
-        messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-      }
-    }, 50);
-  };
+  const GetMessage = (message: IMessage) =>
+    setMessages((prevMessages) => [...prevMessages, message]);
 
   const sendMessage = () => {
     if (areaValue !== "") {
       socket.emit("sendMessage", {
         ownerId: user.id,
+        ownerName: user.name,
         content: areaValue,
         chatId: chatId,
       });
@@ -54,12 +59,9 @@ const ChatPage = () => {
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) =>
     setAreaValue(e.target.value);
 
-  const GetMessage = (message: IMessage) =>
-    setMessages((prevMessages) => [...prevMessages, message]);
-
   return (
     <>
-      <div className="relative h-[calc(100vh-80px)] grid grid-rows-[1fr_auto]">
+      <div className="relative h-[calc(100vh-80px)] grid grid-rows-[1fr_auto] max-[700px]:flex max-[700px]:justify-end flex-col">
         {Messages.length > 0 ? (
           <div className="flex flex-col gap-2 overflow-y-auto p-4">
             {Messages.map((message, index) => (
@@ -68,7 +70,7 @@ const ChatPage = () => {
             <div ref={messagesEndRef} />
           </div>
         ) : (
-          <div className="flex justify-center items-center">
+          <div className="flex justify-center items-center text-center max-[700px]:absolute top-1/2 left-1/2 max-[700px]:-translate-y-1/2 max-[700px]:-translate-x-1/2">
             <p>В этом чате пока нет сообщений</p>
           </div>
         )}
@@ -82,7 +84,7 @@ const ChatPage = () => {
             src={sendArrow}
             className="w-7 cursor-pointer"
             alt="Send"
-            onClick={() => sendMessage()}
+            onClick={sendMessage}
           />
         </div>
       </div>
