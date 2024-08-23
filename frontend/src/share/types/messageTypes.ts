@@ -4,4 +4,5 @@ export interface IMessage {
   content: string;
   createDate: string;
   chatId: string;
+  deleteFn: (messageId: string) => void;
 }

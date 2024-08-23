@@ -33,9 +33,11 @@ const ChatPage = () => {
     if (chatId) {
       socket.emit("joinChat", chatId);
       socket.on("receiveMessage", GetMessage);
+      socket.on("updateMessages", UpdateMessage);
 
       return () => {
         socket.off("receiveMessage", GetMessage);
+        socket.off("updateMessages", UpdateMessage);
       };
     }
   }, []);
@@ -43,6 +45,10 @@ const ChatPage = () => {
   const GetMessage = (message: IMessage) =>
     setMessages((prevMessages) => [...prevMessages, message]);
 
+  const UpdateMessage = (messageId: string) =>
+    setMessages((prevMessages) =>
+      prevMessages.filter((message) => message.id !== messageId)
+    );
   const sendMessage = () => {
     if (areaValue !== "") {
       socket.emit("sendMessage", {
@@ -56,6 +62,13 @@ const ChatPage = () => {
     }
   };
 
+  const deleteMessage = (messageId: string) => {
+    socket.emit("deleteMessage", {
+      chatId: chatId,
+      messageId: messageId,
+    });
+  };
+
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) =>
     setAreaValue(e.target.value);
 
@@ -65,7 +78,7 @@ const ChatPage = () => {
         {Messages.length > 0 ? (
           <div className="flex flex-col gap-2 overflow-y-auto p-4">
             {Messages.map((message, index) => (
-              <Message {...message} key={index} />
+              <Message {...message} deleteFn={deleteMessage} key={index} />
             ))}
             <div ref={messagesEndRef} />
           </div>

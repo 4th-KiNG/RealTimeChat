@@ -11,3 +11,11 @@ export class createMessageDto {
   @IsString()
   chatId: string;
 }
+
+export class deleteMessageDto {
+  @IsString()
+  chatId: string;
+
+  @IsString()
+  messageId: string;
+}
